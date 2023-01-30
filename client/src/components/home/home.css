@@ -1,0 +1,19 @@
+* {
+  /* background-color: #e5e5cb; */
+  text-decoration: none;
+}
+.menu {
+  text-decoration: none;
+}
+.main_home {
+  overflow: hidden;
+  text-decoration: none;
+}
+.searchBar {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.show-more-button {
+  padding-bottom: 50px;
+  margin: 10px;
+}
