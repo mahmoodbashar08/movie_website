@@ -4,21 +4,23 @@ import "./home.css";
 import { Card, Col, Row, Input, Modal, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 // const { Meta } = Card;
-
+// import dotenv from 'dotenv';
+// dotenv.config();
 const Home = () => {
+  // console.log("hi", process.env.REACT_APP_API_KEY);
   const [popularMovie, setPopularMovie] = useState([]);
   const [searchMovie, setSearchMovie] = useState("");
   const [page, setPage] = useState(2);
   const navigate = useNavigate();
   const handlesearch = (e) => {
     e.preventDefault();
-    console.log(searchMovie);
+
     axios
       .get(
         `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&query=${searchMovie}&page=1&include_adult=false`
       )
       .then((response) => {
-        console.log(response.data["results"]);
+        // console.log(response.data["results"]);
         setPopularMovie(response.data["results"]);
       })
       .catch((error) => {
@@ -31,7 +33,7 @@ const Home = () => {
         `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.REACT_APP_API_KEY}&`
       )
       .then((response) => {
-        console.log("hi", response.data["results"]);
+        // console.log("hi", response.data["results"]);
         setPopularMovie(response.data["results"]);
       })
       .catch((error) => {
@@ -84,7 +86,7 @@ const Home = () => {
                   }}
                   // onClick={showModal}
                   onClick={() => {
-                    console.log("hi");
+                    // console.log("hi");
                     navigate(`/movie/${movie.id}`);
                   }}
                   cover={
