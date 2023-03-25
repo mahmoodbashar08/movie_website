@@ -95,44 +95,48 @@ const Menu = () => {
   console.log(items);
   return (
     <div className="menu">
-      {user ? (
-        <div>
-          <Link to="/">
-            <img className="logo" src={image} />
-          </Link>
-        </div>
-      ) : (
-        <img className="logo" src={image} />
-      )}
-      {user ? (
-        <div>
-          <Dropdown
-            overlayStyle={{
-              width: "300px",
-              height: "300px",
-              textDecoration: "none",
-            }}
-            size="64px"
-            menu={{ items }}
-            arrow>
-            <img className="avatar" src={image} />
-          </Dropdown>
-        </div>
-      ) : (
-        <div>
-          <Dropdown
-            overlayStyle={{
-              width: "300px",
-              height: "300px",
-              textDecoration: "none",
-            }}
-            size="64px"
-            menu={{ items1 }}
-            arrow>
-            <img className="avatar" src={image} />
-          </Dropdown>
-        </div>
-      )}
+      <div className="logo-main">
+        {user ? (
+          <div>
+            <Link to="/">
+              <img className="logo" src={image} />
+            </Link>
+          </div>
+        ) : (
+          <img className="logo" src={image} />
+        )}
+      </div>
+      <div className="avatar-main">
+        {user ? (
+          <div>
+            <Dropdown
+              overlayStyle={{
+                width: "300px",
+                height: "300px",
+                textDecoration: "none",
+              }}
+              size="64px"
+              menu={{ items }}
+              arrow>
+              <img className="avatar" src={image} />
+            </Dropdown>
+          </div>
+        ) : (
+          <div>
+            <Dropdown
+              overlayStyle={{
+                width: "300px",
+                height: "300px",
+                textDecoration: "none",
+              }}
+              size="64px"
+              menu={{ items1 }}
+              arrow>
+              <img className="avatar" src={image} />
+            </Dropdown>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

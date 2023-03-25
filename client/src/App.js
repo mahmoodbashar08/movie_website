@@ -6,6 +6,8 @@ import ProtectRouter from "./protectRouter/ProtectRouter";
 import SingleMovie from "./components/SingleMovie/SingleMovie";
 import Profile from "./components/profile/Profile";
 import RainyBackground from "./Text";
+import Watchlist from "./components/watchlist/Watchlist";
+import Users from "./components/Users/Users";
 function App() {
   return (
     <div className="App">
@@ -15,7 +17,8 @@ function App() {
           <Route element={<ProtectRouter />}>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
-
+            <Route path="/watchlist" element={<Watchlist />} />
+            <Route path="/user/:userId" element={<Users />} />
             <Route path="/movie/:movieId" element={<SingleMovie />} />
           </Route>
           <Route path="/test" element={<RainyBackground />} />

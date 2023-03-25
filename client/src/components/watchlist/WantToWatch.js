@@ -1,23 +1,19 @@
 import { Card, Col, Row } from "antd";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-const WatchList = () => {
-  const [favoriteMovies, setFavoriteMovie] = useState([
-    { id: 758009, date: "Wed Jan 18 2023 20:22:19" },
-    { id: 536554, date: "Thu Jan 19 2023 20:22:19" },
-    { id: 898308, date: "Tue Jan 03 2023 20:22:19" },
-    { id: 593643, date: "Tue Jan 31 2023 20:22:19" },
-    { id: 785084, date: "Sun Jan 01 2023 20:22:19" },
+import axios from "axios";
+const WantToWatch = () => {
+  const [wantToWatchList, setWantToWatchList] = useState([
+    { id: 758009 },
+    { id: 536554 },
+    { id: 898308 },
+    { id: 593643 },
+    { id: 785084 },
   ]);
-  const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
-
   useEffect(() => {
     const fetchMovies = async () => {
       const movieData = await Promise.all(
-        favoriteMovies.map(async (id) => {
+        wantToWatchList.map(async (id) => {
           try {
             const response = await axios.get(
               `https://api.themoviedb.org/3/movie/${id["id"]}?api_key=${process.env.REACT_APP_API_KEY}`
@@ -32,16 +28,9 @@ const WatchList = () => {
       setMovies(movieData.filter((data) => data !== null));
     };
     fetchMovies();
-  }, [favoriteMovies]);
+  }, [wantToWatchList]);
   return (
-    <div
-      style={{
-        marginTop: "50px",
-        overflow: "hidden",
-      }}>
-      <Row gutter={16} justify="center">
-        <p style={{ fontSize: "16pt", marginLeft: "10px" }}>favorite movie</p>
-      </Row>
+    <>
       <Row gutter={16} justify="center">
         {movies.map((movie) => (
           <div>
@@ -56,7 +45,6 @@ const WatchList = () => {
               <Card
                 onClick={() => {
                   console.log("hi");
-                  navigate(`/movie/${movie.id}`);
                 }}
                 hoverable
                 style={{ width: 245 }}
@@ -73,8 +61,8 @@ const WatchList = () => {
           </div>
         ))}
       </Row>
-    </div>
+    </>
   );
 };
 
-export default WatchList;
+export default WantToWatch;

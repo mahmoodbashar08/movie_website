@@ -61,6 +61,14 @@ function SingleMovie() {
     console.log(user);
     console.log(movie.id);
   };
+  const handleAddToWatchedMovie = () => {
+    console.log(user);
+    console.log(movie.id);
+  };
+  const handleAddToFavoriteMovie = () => {
+    console.log(user);
+    console.log(movie.id);
+  };
   const handleNewMovie = (recommendate) => {
     console.log("this movie", recommendate);
     navigate(`/movie/${recommendate["id"]}`);
@@ -75,9 +83,9 @@ function SingleMovie() {
         <Col md={16} sm={24} xs={24} justify="center">
           <div style={{ width: "100%" }}>
             <Carousel dots={false} effect="scrollx" interval={100} autoplay>
-              {movieImages.map((movieImage) => {
+              {movieImages.map((movieImage, id) => {
                 return (
-                  <div style={{ width: "100%" }}>
+                  <div key={id} style={{ width: "100%" }}>
                     <img
                       style={contentStyle}
                       src={
@@ -98,21 +106,35 @@ function SingleMovie() {
             <p>vote average : {movie["vote_average"]}</p>
             <h4>genres : </h4>
             <h6>
-              {movieGenres.map((recorde) => {
-                return <div style={{ padding: "10px" }}>{recorde["name"]}</div>;
+              {movieGenres.map((recorde, id) => {
+                return (
+                  <div key={id} style={{ padding: "10px" }}>
+                    {recorde["name"]}
+                  </div>
+                );
               })}
             </h6>
             <h3>Overview : </h3>
             <p>{movie["overview"]}</p>
-            <Button onClick={handleAddToWatchlist}>add to watchlist</Button>
+            <Button style={{ margin: "5px" }} onClick={handleAddToWatchlist}>
+              add to watchlist
+            </Button>
+            <Button style={{ margin: "5px" }} onClick={handleAddToWatchedMovie}>
+              add to watched movie
+            </Button>
+            <Button
+              style={{ margin: "5px" }}
+              onClick={handleAddToFavoriteMovie}>
+              add to favorite
+            </Button>
           </div>
         </Col>
       </Row>
       <h1 style={{ padding: "20px", paddingTop: "100px" }}>Related movie</h1>
       <Row gutter={24} justify="center">
-        {recommendations.map((recommendate) => {
+        {recommendations.map((recommendate, id) => {
           return (
-            <div>
+            <div key={id}>
               <Col
                 justify="center"
                 onClick={() => handleNewMovie(recommendate)}

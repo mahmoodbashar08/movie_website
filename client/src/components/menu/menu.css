@@ -1,6 +1,6 @@
 .menu {
   width: 100%;
-  height: 60px;
+  /* height: 60px; */
   background-color: black;
   display: flex;
   overflow: hidden;
@@ -11,13 +11,21 @@
   height: 40px;
   border-radius: 100%;
   margin: 10px;
-  margin-right: 4%;
+  /* margin-right: 6%; */
 }
 .logo {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   /* padding: 10px;
   padding-left: 20px; */
   margin: 10px;
   margin-left: 20px;
+}
+.avatar-main {
+  padding: 10px;
+  margin-left: 6%;
+}
+.logo-main {
+  padding: 10px;
+  /* margin-left: 6%; */
 }
