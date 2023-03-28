@@ -8,6 +8,7 @@ import Profile from "./components/profile/Profile";
 import RainyBackground from "./Text";
 import Watchlist from "./components/watchlist/Watchlist";
 import Users from "./components/Users/Users";
+import Login from "./components/Login/Login";
 function App() {
   return (
     <div className="App">
@@ -22,7 +23,7 @@ function App() {
             <Route path="/movie/:movieId" element={<SingleMovie />} />
           </Route>
           <Route path="/test" element={<RainyBackground />} />
-          <Route path="/login" element={<div>login</div>} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </ProviderContext>
     </div>
