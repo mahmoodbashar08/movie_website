@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [registerationEmail, setRegisterationEmail] = useState("");
   const [registerationUsername, setRegisterationUsername] = useState("");
   const [registerationPassword, setRegisterationPassword] = useState("");
@@ -46,7 +48,11 @@ const Login = () => {
           withCredentials: true,
         }
       )
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        console.log(response.data);
+        // window.localStorage.setItem("useraccestoken",response.data.token);
+        navigate("/");
+      })
       .catch((error) => console.error(error));
   };
   return (
