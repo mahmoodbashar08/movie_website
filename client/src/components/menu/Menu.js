@@ -58,40 +58,6 @@ const Menu = () => {
       ),
     },
   ];
-  const items1 = [
-    {
-      key: "1",
-      label: (
-        <div>
-          <Link
-            to="/login"
-            style={{
-              color: "black",
-              display: "flex",
-              justifyContent: "center",
-            }}>
-            login
-          </Link>
-        </div>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <div>
-          <Link
-            to="/signin"
-            style={{
-              color: "black",
-              display: "flex",
-              justifyContent: "center",
-            }}>
-            signin
-          </Link>
-        </div>
-      ),
-    },
-  ];
   console.log(items);
   return (
     <div className="menu">
@@ -122,19 +88,7 @@ const Menu = () => {
             </Dropdown>
           </div>
         ) : (
-          <div>
-            <Dropdown
-              overlayStyle={{
-                width: "300px",
-                height: "300px",
-                textDecoration: "none",
-              }}
-              size="64px"
-              menu={{ items1 }}
-              arrow>
-              <img className="avatar" src={image} />
-            </Dropdown>
-          </div>
+          <div></div>
         )}
       </div>
     </div>
