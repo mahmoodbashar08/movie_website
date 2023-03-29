@@ -33,24 +33,18 @@ const Login = () => {
       .then((response) => console.log(response.data))
       .catch((error) => console.error(error));
   };
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
     console.log(loginEmail, loginUsername, loginPassword);
     axios
-      .post(
-        "http://localhost:3001/api/login",
-        {
-          // registerationEmail,
-          username: registerationUsername,
-          password: registerationPassword,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post("http://localhost:3001/api/login", {
+        // registerationEmail,
+        username: loginUsername,
+        password: loginPassword,
+      })
       .then((response) => {
         console.log(response.data);
-        // window.localStorage.setItem("useraccestoken",response.data.token);
+        window.localStorage.setItem("useraccestoken", response.data.token);
         navigate("/");
       })
       .catch((error) => console.error(error));
