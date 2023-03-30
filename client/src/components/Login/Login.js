@@ -1,7 +1,6 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const Login = () => {
   const navigate = useNavigate();
   const [registerationEmail, setRegisterationEmail] = useState("");
@@ -11,7 +10,13 @@ const Login = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-
+  const [sucessLogin, setSucessLogin] = useState(false);
+  useEffect(() => {
+    if (sucessLogin === true) {
+      navigate("/");
+      window.location.reload();
+    }
+  }, [sucessLogin]);
   const createUser = (e) => {
     e.preventDefault();
     console.log(
@@ -33,22 +38,22 @@ const Login = () => {
       .then((response) => console.log(response.data))
       .catch((error) => console.error(error));
   };
-  const login = async (e) => {
+  const login = (e) => {
     e.preventDefault();
     console.log(loginEmail, loginUsername, loginPassword);
     axios
       .post("http://localhost:3001/api/login", {
-        // registerationEmail,
         username: loginUsername,
         password: loginPassword,
       })
       .then((response) => {
         console.log(response.data);
         window.localStorage.setItem("useraccestoken", response.data.token);
-        navigate("/");
+        setSucessLogin(true);
       })
       .catch((error) => console.error(error));
   };
+
   return (
     <>
       <div>
