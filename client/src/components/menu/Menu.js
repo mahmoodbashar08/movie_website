@@ -19,6 +19,7 @@ const Menu = () => {
               color: "black",
               display: "flex",
               justifyContent: "center",
+              textDecoration: "none",
             }}>
             home
           </Link>
@@ -35,6 +36,7 @@ const Menu = () => {
               color: "black",
               display: "flex",
               justifyContent: "center",
+              textDecoration: "none",
             }}>
             watchlist
           </Link>
@@ -51,6 +53,7 @@ const Menu = () => {
               color: "black",
               display: "flex",
               justifyContent: "center",
+              textDecoration: "none",
             }}>
             profile
           </Link>
