@@ -6,7 +6,7 @@ import "./menu.css";
 import { UserAuth } from "../../context/UseAuth";
 
 const Menu = () => {
-  const { user } = UserAuth();
+  const { user, handlelogout } = UserAuth();
   console.log(user);
   const items = [
     {
@@ -54,6 +54,17 @@ const Menu = () => {
             }}>
             profile
           </Link>
+        </div>
+      ),
+    },
+    {
+      key: "4",
+      label: (
+        <div
+          onClick={() => {
+            handlelogout();
+          }}>
+          log out
         </div>
       ),
     },
