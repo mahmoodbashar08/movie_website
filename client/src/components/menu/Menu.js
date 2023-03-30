@@ -61,6 +61,11 @@ const Menu = () => {
       key: "4",
       label: (
         <div
+          style={{
+            color: "black",
+            display: "flex",
+            justifyContent: "center",
+          }}
           onClick={() => {
             handlelogout();
           }}>
