@@ -74,7 +74,7 @@ const Menu = () => {
       ),
     },
   ];
-  console.log(items);
+  // console.log(items);
   return (
     <div className="menu">
       <div className="logo-main">
