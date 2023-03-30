@@ -5,7 +5,7 @@ import { UserAuth } from "../context/UseAuth";
 const ProtectRouter = () => {
   const navigate = useNavigate();
   const { user } = UserAuth();
-  console.log(user);
+  // console.log(user);
   return user ? <Outlet /> : navigate("/login");
 };
 

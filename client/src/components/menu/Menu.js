@@ -7,7 +7,7 @@ import { UserAuth } from "../../context/UseAuth";
 
 const Menu = () => {
   const { user, handlelogout } = UserAuth();
-  console.log(user);
+  // console.log(user);
   const items = [
     {
       key: "1",

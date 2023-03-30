@@ -13,8 +13,8 @@ export const ProviderContext = ({ children }) => {
   };
   useEffect(() => {
     setUser(localStorage.getItem("useraccestoken"));
-    console.log(localStorage.getItem("useraccestoken"));
-    console.log(user);
+    // console.log(localStorage.getItem("useraccestoken"));
+    // console.log(user);
   }, []);
 
   return (
