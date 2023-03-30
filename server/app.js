@@ -48,6 +48,10 @@ const User = sequelize.define("User", {
         allowNull: false,
         unique: true,
     },
+    profileImgPath: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    }
 });
 
 // adding a new account
