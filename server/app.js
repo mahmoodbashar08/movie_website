@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const { Sequelize, DataTypes } = require("sequelize");
 const cors = require("cors");
 const app = express();
+const multer = require("multer");
 
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -54,8 +55,20 @@ const User = sequelize.define("User", {
     }
 });
 
+// Set up storage for uploaded profile images
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "public/uploads/profile-images/");
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname);
+    },
+});
+
+const upload = multer({ storage: storage });
+
 // adding a new account
-app.post("/api/register", async (req, res, next) => {
+app.post("/api/register", upload.single("profileImage"), async (req, res, next) => {
     try {
         const { username, password, email } = req.body;
         console.log(username, password, email);
@@ -71,7 +84,12 @@ app.post("/api/register", async (req, res, next) => {
             return res.status(400).json({ message: "Email has an account" });
         }
 
-        const user = await User.create({ username, password, email });
+        const user = await User.create({
+            username,
+            password,
+            email,
+            profileImgPath: req.file ? req.file.path : null,
+        });
         res.status(201).json(user);
     } catch (error) {
         next(error);
