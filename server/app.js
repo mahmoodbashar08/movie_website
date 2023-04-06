@@ -9,6 +9,7 @@ const multer = require("multer");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const { log } = require("console");
 const jwtSecretKey = process.env.JWT_SECRET;
 const secretKey = jwt.sign({ key: "value" }, "random-secret", {
     expiresIn: "1d",
@@ -18,7 +19,7 @@ const payload = { username: "exampleuser" };
 const options = { expiresIn: "14d" };
 
 const token = jwt.sign(payload, jwtSecretKey, options);
-
+console.log("use");
 app.use(
     cors({
         origin: "http://localhost:3000",
@@ -49,12 +50,21 @@ const User = sequelize.define("User", {
         allowNull: false,
         unique: true,
     },
+    createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
     profileImgPath: {
         type: DataTypes.STRING,
         allowNull: true,
     }
 });
 
+console.log("database");
 // Set up storage for uploaded profile images
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -67,6 +77,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+console.log("photo");
 // adding a new account
 app.post("/api/register", upload.single("profileImage"), async (req, res, next) => {
     try {
@@ -96,6 +107,7 @@ app.post("/api/register", upload.single("profileImage"), async (req, res, next) 
     }
 });
 
+console.log("validation");
 // loging in and checking the validation
 app.post("/api/login", async (req, res, next) => {
     try {
@@ -120,6 +132,7 @@ app.post("/api/login", async (req, res, next) => {
     }
 });
 
+console.log("error");
 // Define error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
