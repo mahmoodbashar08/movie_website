@@ -80,7 +80,7 @@ function SingleMovie() {
   return (
     <div className="singleMovie-main">
       <Row gutter={24} justify="center">
-        <Col md={16} sm={24} xs={24} justify="center">
+        <Col lg={16} md={24} sm={24} xs={24} justify="center">
           <div style={{ width: "100%" }}>
             <Carousel dots={false} effect="scrollx" interval={100} autoplay>
               {movieImages.map((movieImage, id) => {

@@ -6,6 +6,7 @@ const Login = () => {
   const [registerationEmail, setRegisterationEmail] = useState("");
   const [registerationUsername, setRegisterationUsername] = useState("");
   const [registerationPassword, setRegisterationPassword] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
@@ -35,7 +36,11 @@ const Login = () => {
         username: registerationUsername,
         password: registerationPassword,
       })
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        console.log(response.data);
+        const formData = new FormData();
+        formData.append("file", selectedFile, registerationUsername);
+      })
       .catch((error) => console.error(error));
   };
   const login = (e) => {
@@ -53,6 +58,9 @@ const Login = () => {
       })
       .catch((error) => console.error(error));
   };
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
   return (
     <>
@@ -67,6 +75,9 @@ const Login = () => {
           <br />
           password :{" "}
           <input onChange={(e) => setRegisterationPassword(e.target.value)} />
+          <br />
+          profile image:
+          <input type="file" onChange={handleFileChange} />
           <br />
           <button type="submit">new account </button>
         </form>
