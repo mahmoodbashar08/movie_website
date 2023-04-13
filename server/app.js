@@ -35,7 +35,7 @@ const sequelize = new Sequelize({
     storage: "./database.sqlite",
 });
 
-const User = sequelize.define("User", {
+const User = sequelize.define("Users", {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -143,3 +143,4 @@ app.use((err, req, res, next) => {
 app.listen(3001, () => {
     console.log("Server started on port 3001");
 });
+
