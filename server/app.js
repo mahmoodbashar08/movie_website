@@ -115,6 +115,11 @@ app.post("/api/login", async (req, res, next) => {
         console.log("username", username);
         const user = await User.findOne({ where: { username } });
         console.log(user);
+
+        if (!username || !password) {
+            return res.status(400).json({ message: "Username or password missing" });
+        }
+
         if (!user) {
             return res.status(404).json({ message: "Account not found" });
         }
@@ -143,4 +148,3 @@ app.use((err, req, res, next) => {
 app.listen(3001, () => {
     console.log("Server started on port 3001");
 });
-
