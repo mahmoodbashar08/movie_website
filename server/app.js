@@ -137,6 +137,26 @@ app.post("/api/login", async (req, res, next) => {
     }
 });
 
+// adding the movies to the users note:each user can have multiple movies
+app.post("/api/movies", async (req, res, next) => {
+    try {
+        const { movieId } = req.body;
+        const token = req.headers.authorization.split(" ")[1];
+        const decodedToken = jwt.verify(token, jwtSecretKey);
+        const userId = decodedToken.id;
+
+        const movie = await Movie.create({
+            id: movieId,
+            user_id: userId,
+        });
+
+        res.status(200).json({ message: "Movie added successfully" });
+    } catch (error) {
+        next(error);
+    }
+});
+
+
 console.log("error");
 // Define error handling middleware
 app.use((err, req, res, next) => {
