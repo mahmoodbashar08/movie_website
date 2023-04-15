@@ -138,7 +138,7 @@ app.post("/api/login", async (req, res, next) => {
 });
 
 // adding the movies to the users note:each user can have multiple movies
-app.post("/api/movies", async (req, res, next) => {
+app.post("/api/watched", async (req, res, next) => {
     try {
         const { movieId } = req.body;
         const token = req.headers.authorization.split(" ")[1];
