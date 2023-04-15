@@ -64,6 +64,17 @@ function SingleMovie() {
   const handleAddToWatchedMovie = () => {
     console.log(user);
     console.log(movie.id);
+    axios
+      .post(`http://localhost:3001/api/watched`, {
+        user_id: user,
+        movieId: movie.id,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const handleAddToFavoriteMovie = () => {
     console.log(user);
