@@ -60,6 +60,26 @@ function SingleMovie() {
   const handleAddToWatchlist = () => {
     console.log(user);
     console.log(movie.id);
+    axios
+      .post(
+        `http://localhost:3001/api/watchlist`,
+        {
+          user_id: user,
+          movieId: movie.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const handleAddToWatchedMovie = () => {
     console.log(user);
