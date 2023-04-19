@@ -65,10 +65,19 @@ function SingleMovie() {
     console.log(user);
     console.log(movie.id);
     axios
-      .post(`http://localhost:3001/api/watched`, {
-        user_id: user,
-        movieId: movie.id,
-      })
+      .post(
+        `http://localhost:3001/api/watched`,
+        {
+          user_id: user,
+          movieId: movie.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         console.log(response);
       })
