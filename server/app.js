@@ -72,6 +72,22 @@ const Watched = sequelize.define('watched', {
     },
 });
 
+const Watchlist = sequelize.define('watchlist', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    movie_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+});
+
 // sequelize.sync();
 
 
@@ -151,7 +167,7 @@ app.post("/api/login", async (req, res, next) => {
     }
 });
 
-// adding the movies to the users note:each user can have multiple movies
+// adding the movies to watched list note:each user can have multiple movies
 app.post('/api/watched', async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
@@ -171,6 +187,33 @@ app.post('/api/watched', async (req, res, next) => {
             user_id: userId
         });
         console.log('Watched:', watched);
+        res.status(200).json({ message: "Movie added successfully" });
+    } catch (error) {
+        console.log('Error:', error);
+        next(error);
+    }
+});
+
+// adding the movies to the want to watch list note:each user can have multiple movies
+app.post('/api/watchlist', async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: "Authorization header missing" });
+        }
+        const token = authHeader.replace('Bearer ', '');
+        console.log('Token:', token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Decoded:', decoded);
+        const userId = decoded.id;
+        const { movieId } = req.body;
+        console.log('User ID:', userId);
+        console.log('Movie ID:', movieId);
+        const watchlist = await Watchlist.create({
+            movie_id: movieId,
+            user_id: userId
+        });
+        console.log('Watchlist:', watchlist);
         res.status(200).json({ message: "Movie added successfully" });
     } catch (error) {
         console.log('Error:', error);
