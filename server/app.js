@@ -8,17 +8,9 @@ const multer = require("multer");
 
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const fs = require("fs");
-const { log } = require("console");
-const jwtSecretKey = process.env.JWT_SECRET;
-const secretKey = jwt.sign({ key: "value" }, "random-secret", {
-    expiresIn: "1d",
-});
+// const fs = require("fs");
+// const { log } = require("console");
 
-const payload = { username: "exampleuser" };
-const options = { expiresIn: "14d" };
-
-const token = jwt.sign(payload, jwtSecretKey, options);
 console.log("use");
 app.use(
     cors({
@@ -63,6 +55,25 @@ const User = sequelize.define("Users", {
         allowNull: true,
     }
 });
+
+const Watched = sequelize.define('watched', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    movie_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+});
+
+// sequelize.sync();
+
 
 console.log("database");
 // Set up storage for uploaded profile images
@@ -112,7 +123,7 @@ console.log("validation");
 app.post("/api/login", async (req, res, next) => {
     try {
         const { username, password } = req.body;
-        console.log("username", username);
+        console.log("username ", username);
         const user = await User.findOne({ where: { username } });
         console.log(user);
 
@@ -127,10 +138,13 @@ app.post("/api/login", async (req, res, next) => {
         if (user.password !== password) {
             return res.status(401).json({ message: "Incorrect password" });
         }
-
-        const payload = { username };
+        const jwtSecretKey = process.env.JWT_SECRET;
+        const payload = {
+            id: user.id,
+            username: user.username,
+            email: user.email
+        };
         const token = jwt.sign(payload, jwtSecretKey, { expiresIn: "14d" });
-
         res.status(200).json({ token });
     } catch (error) {
         next(error);
@@ -138,20 +152,28 @@ app.post("/api/login", async (req, res, next) => {
 });
 
 // adding the movies to the users note:each user can have multiple movies
-app.post("/api/watched", async (req, res, next) => {
+app.post('/api/watched', async (req, res, next) => {
     try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: "Authorization header missing" });
+        }
+        const token = authHeader.split(" ")[1];
+        console.log('Token:', token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Decoded:', decoded);
+        const userId = decoded.id;
         const { movieId } = req.body;
-        const token = req.headers.authorization.split(" ")[1];
-        const decodedToken = jwt.verify(token, jwtSecretKey);
-        const userId = decodedToken.id;
-
-        const movie = await Movie.create({
-            id: movieId,
-            user_id: userId,
+        console.log('User ID:', userId);
+        console.log('Movie ID:', movieId);
+        const watched = await Watched.create({
+            movie_id: movieId,
+            user_id: userId
         });
-
+        console.log('Watched:', watched);
         res.status(200).json({ message: "Movie added successfully" });
     } catch (error) {
+        console.log('Error:', error);
         next(error);
     }
 });
