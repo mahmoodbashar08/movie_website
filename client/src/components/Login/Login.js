@@ -173,23 +173,7 @@ function Card({ onClick }) {
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-  const props = {
-    name: "file",
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
+
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
@@ -274,7 +258,7 @@ function Card({ onClick }) {
               />
             </div>
             {/* <input onChange={(e) => setRegisterationPassword(e.target.value)} /> */}
-            <br />
+            {/* <br /> */}
             <div>
               profile image:
               <ImgCrop rotationSlider>
@@ -290,10 +274,12 @@ function Card({ onClick }) {
               </ImgCrop>
             </div>
             {/* <input type="file" onChange={handleFileChange} /> */}
-            <br />
+            {/* <br /> */}
             <br />
             {/* <button type="submit">new account </button> */}
-            <Button htmlType="submit">new account</Button>
+            <div>
+              <Button htmlType="submit">new account</Button>
+            </div>
             <br />
             <br />
             already have an account ?

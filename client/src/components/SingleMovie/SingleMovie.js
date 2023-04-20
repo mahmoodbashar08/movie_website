@@ -5,7 +5,11 @@ import "./SingleMovie.css";
 import { Button, Card, Col, Row } from "antd";
 import { Carousel } from "antd";
 import { UserAuth } from "../../context/UseAuth";
-
+import { HeartTwoTone } from "@ant-design/icons";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Checkbox from "@mui/material/Checkbox";
 const contentStyle = {
   height: "580px",
   width: "100%",
@@ -24,6 +28,8 @@ function SingleMovie() {
   const [movieImages, setMovieImages] = useState([]);
   const [movieGenres, setMovieGenres] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
+
+  const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
     axios
@@ -108,6 +114,7 @@ function SingleMovie() {
   const handleAddToFavoriteMovie = () => {
     console.log(user);
     console.log(movie.id);
+    setFavorite(!favorite);
   };
   const handleNewMovie = (recommendate) => {
     console.log("this movie", recommendate);
@@ -162,11 +169,32 @@ function SingleMovie() {
             <Button style={{ margin: "5px" }} onClick={handleAddToWatchedMovie}>
               add to watched movie
             </Button>
-            <Button
+            {/* <Button
+            // style={{ margin: "5px" }}
+            > */}
+            {/* <div onClick={handleAddToFavoriteMovie}>
+              <FavoriteIcon />
+              <FavoriteBorderIcon />
+            </div> */}
+            <FormControlLabel
               style={{ margin: "5px" }}
-              onClick={handleAddToFavoriteMovie}>
-              add to favorite
-            </Button>
+              onClick={handleAddToFavoriteMovie}
+              control={
+                favorite ? (
+                  <Checkbox
+                    icon={<FavoriteBorderIcon />}
+                    checkedIcon={<FavoriteIcon />}
+                  />
+                ) : (
+                  <Checkbox
+                    icon={<FavoriteIcon />}
+                    checkedIcon={<FavoriteBorderIcon />}
+                  />
+                )
+              }
+            />
+            {/* <HeartTwoTone style={{ margin: "5px", fontSize: "20pt" }} /> */}
+            {/* </Button> */}
           </div>
         </Col>
       </Row>
