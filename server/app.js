@@ -65,10 +65,12 @@ const Watched = sequelize.define('watched', {
     movie_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: 'watched_unique_constraint'
     },
     user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: 'watched_unique_constraint'
     },
 });
 
@@ -81,12 +83,15 @@ const Watchlist = sequelize.define('watchlist', {
     movie_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: 'watchlist_unique_constraint'
     },
     user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: 'watchlist_unique_constraint'
     },
 });
+
 
 // sequelize.sync();
 
@@ -182,17 +187,34 @@ app.post('/api/watched', async (req, res, next) => {
         const { movieId } = req.body;
         console.log('User ID:', userId);
         console.log('Movie ID:', movieId);
+
+        // Check if movie is already in watched list
+        const isWatched = await Watched.findOne({ where: { movie_id: movieId, user_id: userId } });
+        if (isWatched) {
+            return res.status(409).json({ message: "Movie already in watched" });
+        }
+
+        // Check if movie is in watchlist
+        const isWatchlisted = await Watchlist.findOne({ where: { movie_id: movieId, user_id: userId } });
+        if (isWatchlisted) {
+            // If movie is in watchlist, remove it
+            await Watchlist.destroy({ where: { movie_id: movieId, user_id: userId } });
+            console.log('Movie removed from watchlist:', movieId);
+        }
+
+        // Add movie to watched list
         const watched = await Watched.create({
             movie_id: movieId,
             user_id: userId
         });
         console.log('Watched:', watched);
-        res.status(200).json({ message: "Movie added successfully" });
+        res.status(200).json({ message: "Movie added to watched successfully" });
     } catch (error) {
         console.log('Error:', error);
         next(error);
     }
 });
+
 
 // adding the movies to the want to watch list note:each user can have multiple movies
 app.post('/api/watchlist', async (req, res, next) => {
@@ -209,17 +231,32 @@ app.post('/api/watchlist', async (req, res, next) => {
         const { movieId } = req.body;
         console.log('User ID:', userId);
         console.log('Movie ID:', movieId);
+
+        // Check if movie is already in watchlist
+        const isWatchlisted = await Watchlist.findOne({ where: { movie_id: movieId, user_id: userId } });
+        if (isWatchlisted) {
+            return res.status(409).json({ message: "Movie already in watchlist" });
+        }
+
+        // Check if movie is in watched list
+        const isWatched = await Watched.findOne({ where: { movie_id: movieId, user_id: userId } });
+        if (isWatched) {
+            return res.status(409).json({ message: "The movie is already watched" });
+        }
+
+        // Add movie to watchlist
         const watchlist = await Watchlist.create({
             movie_id: movieId,
             user_id: userId
         });
         console.log('Watchlist:', watchlist);
-        res.status(200).json({ message: "Movie added successfully" });
+        res.status(200).json({ message: "Movie added to watchlist successfully" });
     } catch (error) {
         console.log('Error:', error);
         next(error);
     }
 });
+
 
 
 console.log("error");
