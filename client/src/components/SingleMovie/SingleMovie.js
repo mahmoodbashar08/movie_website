@@ -115,26 +115,6 @@ function SingleMovie() {
     console.log(user);
     console.log(movie.id);
     setFavorite(!favorite);
-    axios
-      .post(
-        `http://localhost:3001/api/favorites`,
-        {
-          user_id: user,
-          movieId: movie.id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
   const handleNewMovie = (recommendate) => {
     console.log("this movie", recommendate);
