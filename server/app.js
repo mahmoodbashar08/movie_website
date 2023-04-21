@@ -305,6 +305,47 @@ app.post('/api/favorites', async (req, res, next) => {
     }
 });
 
+// MovieStatus: to see if the movie is in watched list, watchlist, favorite or not
+app.get('/api/moviestatus', async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: "Authorization header missing" });
+        }
+        const token = authHeader.replace('Bearer ', '');
+        console.log('Token:', token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Decoded:', decoded);
+        const userId = decoded.id;
+        const movieId = req.params.id;
+        console.log('User ID:', userId);
+        console.log('Movie ID:', movieId);
+
+        // Check if movie is in watched list
+        const isWatched = await Watched.findOne({ where: { movie_id: movieId, user_id: userId } });
+        const isInWatched = isWatched ? true : false;
+
+        // Check if movie is in watchlist
+        const isWatchlisted = await Watchlist.findOne({ where: { movie_id: movieId, user_id: userId } });
+        const isInWatchlist = isWatchlisted ? true : false;
+
+        // Check if movie is in favorite list
+        const isFavorited = await Favorite.findOne({ where: { movie_id: movieId, user_id: userId } });
+        const isInFavorite = isFavorited ? true : false;
+
+        const movieStatus = {
+            IsInWatched: isInWatched,
+            IsInWatchList: isInWatchlist,
+            IsInFavorite: isInFavorite
+        };
+
+        console.log('Movie Status:', movieStatus);
+        res.status(200).json(movieStatus);
+    } catch (error) {
+        console.log('Error:', error);
+        next(error);
+    }
+});
 
 console.log("error");
 // Define error handling middleware
