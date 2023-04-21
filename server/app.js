@@ -92,7 +92,21 @@ const Watchlist = sequelize.define('watchlist', {
     },
 });
 
-
+const Favorite = sequelize.define('Favorite', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    movie_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    }
+});
 // sequelize.sync();
 
 
@@ -215,7 +229,6 @@ app.post('/api/watched', async (req, res, next) => {
     }
 });
 
-
 // adding the movies to the want to watch list note:each user can have multiple movies
 app.post('/api/watchlist', async (req, res, next) => {
     try {
@@ -257,6 +270,40 @@ app.post('/api/watchlist', async (req, res, next) => {
     }
 });
 
+// adding the movies to the favorites list note:each user can have multiple movies
+app.post('/api/favorites', async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: 'Authorization header missing' });
+        }
+        const token = authHeader.replace('Bearer ', '');
+        console.log('Token:', token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Decoded:', decoded);
+        const userId = decoded.id;
+        const { movieId } = req.body;
+        console.log('User ID:', userId);
+        console.log('Movie ID:', movieId);
+
+        // Check if movie is already in favorite list
+        const isFavorited = await Favorite.findOne({ where: { movie_id: movieId, user_id: userId } });
+        if (isFavorited) {
+            return res.status(409).json({ message: 'Movie already in favorite list' });
+        }
+
+        // Add movie to favorite list
+        const favorite = await Favorite.create({
+            movie_id: movieId,
+            user_id: userId,
+        });
+        console.log('Favorite:', favorite);
+        res.status(200).json({ message: 'Movie added to favorite list successfully' });
+    } catch (error) {
+        console.log('Error:', error);
+        next(error);
+    }
+});
 
 
 console.log("error");
