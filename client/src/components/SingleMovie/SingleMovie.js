@@ -5,7 +5,7 @@ import "./SingleMovie.css";
 import { Button, Card, Col, Row } from "antd";
 import { Carousel } from "antd";
 import { UserAuth } from "../../context/UseAuth";
-import { HeartTwoTone } from "@ant-design/icons";
+// import { HeartTwoTone } from "@ant-design/icons";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -22,7 +22,7 @@ function SingleMovie() {
   const navigate = useNavigate();
   const location = useLocation();
   const { movieId } = useParams();
-  console.log(movieId);
+  // console.log(movieId);
   const { user } = UserAuth();
   const [movie, setMovie] = useState([]);
   const [movieImages, setMovieImages] = useState([]);
@@ -37,7 +37,7 @@ function SingleMovie() {
         `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
       )
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setMovie(response.data);
         setMovieGenres(response.data["genres"]);
       })
@@ -47,7 +47,7 @@ function SingleMovie() {
         `https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${process.env.REACT_APP_API_KEY}`
       )
       .then((response) => {
-        console.log("images", response.data.backdrops);
+        // console.log("images", response.data.backdrops);
         const limitImages = response.data.backdrops.slice(0, 15);
         setMovieImages(limitImages);
       })
@@ -57,11 +57,31 @@ function SingleMovie() {
         `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
       )
       .then((response) => {
-        console.log("recommendations", response.data["results"]);
+        // console.log("recommendations", response.data["results"]);
         setRecommendations(response.data["results"]);
       })
       .catch((error) => console.log(error));
     window.scrollTo(0, 0);
+    console.log(user);
+    console.log(movieId);
+    axios
+      .get(
+        "http://locathost:3001/api/moviestatus",
+        {
+          user_id: user,
+          movieId: movieId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => console.log(error));
   }, [location.pathname]);
   const handleAddToWatchlist = () => {
     console.log(user);
@@ -115,6 +135,26 @@ function SingleMovie() {
     console.log(user);
     console.log(movie.id);
     setFavorite(!favorite);
+    axios
+      .post(
+        `http://localhost:3001/api/favorites`,
+        {
+          user_id: user,
+          movieId: movie.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const handleNewMovie = (recommendate) => {
     console.log("this movie", recommendate);
