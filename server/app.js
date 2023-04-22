@@ -306,7 +306,7 @@ app.post('/api/favorites', async (req, res, next) => {
 });
 
 // MovieStatus: to see if the movie is in watched list, watchlist, favorite or not
-app.get('/api/moviestatus/:id', async (req, res, next) => {
+app.get('/api/moviestatus', async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
@@ -317,7 +317,7 @@ app.get('/api/moviestatus/:id', async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log('Decoded:', decoded);
         const userId = decoded.id;
-        const movieId = req.params.id;
+        const { movieId } = req.body; // Get movie ID from request body
         console.log('User ID:', userId);
         console.log('Movie ID:', movieId);
 
