@@ -306,7 +306,7 @@ app.post('/api/favorites', async (req, res, next) => {
 });
 
 // MovieStatus: to see if the movie is in watched list, watchlist, favorite or not
-app.get('/api/moviestatus', async (req, res, next) => {
+app.get('/api/moviestatus/:id', async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
@@ -346,6 +346,7 @@ app.get('/api/moviestatus', async (req, res, next) => {
         next(error);
     }
 });
+
 
 console.log("error");
 // Define error handling middleware
