@@ -132,8 +132,8 @@ function SingleMovie() {
       });
   };
   const handleAddToFavoriteMovie = () => {
-    console.log(user);
-    console.log(movie.id);
+    // console.log(user);
+    // console.log(movie.id);
     setFavorite(!favorite);
     axios
       .post(
