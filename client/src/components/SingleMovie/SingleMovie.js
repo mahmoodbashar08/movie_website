@@ -134,7 +134,7 @@ function SingleMovie() {
   const handleAddToFavoriteMovie = () => {
     // console.log(user);
     // console.log(movie.id);
-    setFavorite(!favorite);
+    // setFavorite(!favorite);
     axios
       .post(
         `http://localhost:3001/api/favorites`,
