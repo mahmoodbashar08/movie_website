@@ -336,7 +336,7 @@ app.get("/api/moviestatus", async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log("Decoded:", decoded);
         const userId = decoded.id;
-        const movieId = req.movieId; // Get movie ID from request body
+        const { movieId } = req.body; // Get movie ID from request body
         console.log("User ID:", userId);
         console.log("Movie ID:", movieId);
 
