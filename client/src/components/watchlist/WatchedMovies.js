@@ -1,22 +1,17 @@
 import { Card, Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const WatchedMovies = () => {
-  const [wantToWatchList, setWantToWatchList] = useState([
-    { id: 758009 },
-    { id: 536554 },
-    { id: 898308 },
-    { id: 593643 },
-    { id: 785084 },
-  ]);
-  const [movies, setMovies] = useState([]);
+const WatchedMovies = ({ movie }) => {
+  // console.log("hi", movie);
+  const [watched, setWatched] = useState([]);
   useEffect(() => {
     const fetchMovies = async () => {
       const movieData = await Promise.all(
-        wantToWatchList.map(async (id) => {
+        movie.map(async (movie_id) => {
+          console.log("id", movie_id["movie_id"]);
           try {
             const response = await axios.get(
-              `https://api.themoviedb.org/3/movie/${id["id"]}?api_key=${process.env.REACT_APP_API_KEY}`
+              `https://api.themoviedb.org/3/movie/${movie_id["movie_id"]}?api_key=${process.env.REACT_APP_API_KEY}`
             );
             return response.data;
           } catch (error) {
@@ -25,14 +20,15 @@ const WatchedMovies = () => {
           }
         })
       );
-      setMovies(movieData.filter((data) => data !== null));
+      setWatched(movieData.filter((data) => data !== null));
     };
     fetchMovies();
-  }, [wantToWatchList]);
+    console.log("final", watched);
+  }, []);
   return (
     <>
       <Row gutter={16} justify="center">
-        {movies.map((movie) => (
+        {watched.map((movie, id) => (
           <div>
             <Col
               style={{

@@ -39,15 +39,15 @@ const Watchlist = () => {
   return (
     <div style={{ overflow: "hidden" }}>
       <Row gutter={16} justify="center">
-        <Col style={{ margin: "0px", fontSize: "16pt" }}>want to watch</Col>
+        <Col style={{ margin: "20px", fontSize: "16pt" }}>watched</Col>
+      </Row>
+      {yes ? <WatchedMovies movie={movies["watchedMovies"]} /> : <div></div>}
+      <Row gutter={16} justify="center">
+        <Col style={{ margin: "20px", fontSize: "16pt" }}>not watched</Col>
       </Row>
       {yes ? <WantToWatchs movie={movies["watchlistMovies"]} /> : <div></div>}
       <Row gutter={16} justify="center">
-        <Col style={{ margin: "0px", fontSize: "16pt" }}>watched movie</Col>
-      </Row>
-      {/* <WatchedMovies > */}
-      <Row gutter={16} justify="center">
-        <Col style={{ margin: "0px", fontSize: "16pt" }}>favorite</Col>
+        <Col style={{ margin: "20px", fontSize: "16pt" }}>favorite</Col>
       </Row>
       <Row gutter={16} justify="center">
         <Col>list</Col>
