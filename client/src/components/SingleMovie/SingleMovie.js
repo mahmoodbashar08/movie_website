@@ -65,21 +65,14 @@ function SingleMovie() {
     console.log(user);
     console.log(movieId);
     axios
-      .get(
-        "http://localhost:3001/api/moviestatus",
-        {
-          user_id: user,
-          movieId: movieId,
+      .get(`http://localhost:3001/api/moviestatus?movieId=${movieId}`, {
+        headers: {
+          Authorization: `Bearer ${user}`,
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            Authorization: `Bearer ${user}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      })
       .then((response) => {
-        console.log(response);
+        console.log("state", response);
       })
       .catch((error) => console.log(error));
   }, [location.pathname]);
