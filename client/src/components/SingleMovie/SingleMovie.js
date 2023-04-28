@@ -208,21 +208,33 @@ function SingleMovie() {
             <h3>Overview : </h3>
             <p>{movie["overview"]}</p>
             {isNotWatched ? (
+              <Button
+                danger
+                style={{ margin: "5px" }}
+                // onClick={handleAddToWatchlist}
+              >
+                remove from watchlist
+              </Button>
+            ) : (
               <Button style={{ margin: "5px" }} onClick={handleAddToWatchlist}>
                 add to watchlist
               </Button>
-            ) : (
-              <div></div>
             )}
 
-            {!isWatched ? (
+            {isWatched ? (
+              <Button
+                danger
+                style={{ margin: "5px" }}
+                // onClick={handleAddToWatchedMovie}
+              >
+                remove from watched movie
+              </Button>
+            ) : (
               <Button
                 style={{ margin: "5px" }}
                 onClick={handleAddToWatchedMovie}>
                 add to watched movie
               </Button>
-            ) : (
-              <div></div>
             )}
             {/* <Button
             // style={{ margin: "5px" }}
