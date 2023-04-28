@@ -1,9 +1,9 @@
 import { Card, Col, Row } from "antd";
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-const WantToWatchs = ({ movie }) => {
-  console.log("hi", movie);
-  const [wantToWatchList, setWantToWatchList] = useState([]);
+import React, { useEffect, useState } from "react";
+
+const FavoritMovies = ({ movie }) => {
+  const [favoriteList, setFavoriteList] = useState([]);
   useEffect(() => {
     const fetchMovies = async () => {
       const movieData = await Promise.all(
@@ -20,15 +20,15 @@ const WantToWatchs = ({ movie }) => {
           }
         })
       );
-      setWantToWatchList(movieData.filter((data) => data !== null));
+      setFavoriteList(movieData.filter((data) => data !== null));
     };
     fetchMovies();
-    console.log("final", wantToWatchList);
+    console.log("final", favoriteList);
   }, []);
   return (
     <>
       <Row gutter={16} justify="center">
-        {wantToWatchList.map((movie, id) => (
+        {favoriteList.map((movie, id) => (
           <div key={id}>
             <Col
               style={{
@@ -61,4 +61,4 @@ const WantToWatchs = ({ movie }) => {
   );
 };
 
-export default WantToWatchs;
+export default FavoritMovies;

@@ -4,6 +4,7 @@ import WantToWatchs from "./WantToWatch";
 import WatchedMovies from "./WatchedMovies";
 import axios from "axios";
 import { UserAuth } from "../../context/UseAuth";
+import FavoritMovies from "./FavoritMovies";
 
 const Watchlist = () => {
   const { user } = UserAuth();
@@ -49,9 +50,7 @@ const Watchlist = () => {
       <Row gutter={16} justify="center">
         <Col style={{ margin: "20px", fontSize: "16pt" }}>favorite</Col>
       </Row>
-      <Row gutter={16} justify="center">
-        <Col>list</Col>
-      </Row>
+      {yes ? <FavoritMovies movie={movies["favoriteMovies"]} /> : <div></div>}
     </div>
   );
 };
