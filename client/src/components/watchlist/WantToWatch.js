@@ -1,15 +1,15 @@
 import { Card, Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const WantToWatchs = ({ wantToWatch }) => {
-  // const [wantToWatchList, setWantToWatchList] = useState([]);
-  const [movie, setMovies] = useState([]);
-  // console.log("finaly", wantToWatch);
+const WantToWatchs = ({ movie }) => {
+  // console.log();
+  console.log("hi", movie);
+  const [wantToWatchList, setWantToWatchList] = useState([]);
   useEffect(() => {
     const fetchMovies = async () => {
       const movieData = await Promise.all(
-        wantToWatch.map(async (movie_id) => {
-          console.log(movie_id["movie_id"]);
+        movie.map(async (movie_id) => {
+          console.log("id", movie_id["movie_id"]);
           try {
             const response = await axios.get(
               `https://api.themoviedb.org/3/movie/${movie_id["movie_id"]}?api_key=${process.env.REACT_APP_API_KEY}`
@@ -21,15 +21,39 @@ const WantToWatchs = ({ wantToWatch }) => {
           }
         })
       );
-      setMovies(movieData.filter((data) => data !== null));
+      setWantToWatchList(movieData.filter((data) => data !== null));
     };
     fetchMovies();
-    // console.log("wow", movie);
+    console.log("final", wantToWatchList);
   }, []);
+  // const [movie, setMovies] = useState([]);
+  // // console.log("finaly", wantToWatch);
+  // console.log("hi");
+  // useEffect(() => {
+  //   const fetchMovies = async () => {
+  //     const movieData = await Promise.all(
+  //       wantToWatch.map(async (movie_id) => {
+  //         console.log("id", movie_id["movie_id"]);
+  //         try {
+  //           const response = await axios.get(
+  //             `https://api.themoviedb.org/3/movie/${movie_id["movie_id"]}?api_key=${process.env.REACT_APP_API_KEY}`
+  //           );
+  //           return response.data;
+  //         } catch (error) {
+  //           console.error(error);
+  //           return null;
+  //         }
+  //       })
+  //     );
+  //     setMovies(movieData.filter((data) => data !== null));
+  //   };
+  //   fetchMovies();
+  //   // console.log("wow", movie);
+  // }, []);
   return (
     <>
       <Row gutter={16} justify="center">
-        {movie.map((movie, id) => (
+        {wantToWatchList.map((movie, id) => (
           <div key={id}>
             <Col
               style={{

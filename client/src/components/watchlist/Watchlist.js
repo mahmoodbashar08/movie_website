@@ -7,42 +7,45 @@ import { UserAuth } from "../../context/UseAuth";
 
 const Watchlist = () => {
   const { user } = UserAuth();
-  const [watched, setwatched] = useState([]);
-  const [wantToWatch, setWantToWatch] = useState([]);
-  const [favorite, setFavorite] = useState([]);
+  const [yes, setyes] = useState(false);
+  const [movies, setMovies] = useState({
+    watchedMovies: [],
+    watchlistMovies: [],
+    favoriteMovies: [],
+  });
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/api/movies/", {
-          headers: {
-            Authorization: `Bearer ${user}`,
-            "Content-Type": "application/json",
-          },
+    axios
+      .get("http://localhost:3001/api/movies", {
+        headers: {
+          Authorization: `Bearer ${user}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        // console.log(response);
+        const { watchedMovies, watchlistMovies, favoriteMovies } =
+          response.data;
+        setMovies({
+          watchedMovies,
+          watchlistMovies,
+          favoriteMovies,
         });
-        // console.log(response.data.watchedMovies);
-        setwatched(response.data.watchedMovies);
-        setWantToWatch(response.data.watchlistMovies);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
+        setyes(true);
+      })
+      .catch((error) => console.log(error));
   }, []);
-  console.log("hi", wantToWatch);
+  console.log(movies["watchlistMovies"]);
   return (
     <div style={{ overflow: "hidden" }}>
       <Row gutter={16} justify="center">
         <Col style={{ margin: "0px", fontSize: "16pt" }}>want to watch</Col>
       </Row>
-
-      {/* {watched.map((id) => (
-        <div>hi</div>
-      ))} */}
-      <WantToWatchs wantToWatch={wantToWatch} />
+      {yes ? <WantToWatchs movie={movies["watchlistMovies"]} /> : <div></div>}
       <Row gutter={16} justify="center">
         <Col style={{ margin: "0px", fontSize: "16pt" }}>watched movie</Col>
       </Row>
-      {/* <WatchedMovies /> */}
+      {/* <WatchedMovies > */}
       <Row gutter={16} justify="center">
         <Col style={{ margin: "0px", fontSize: "16pt" }}>favorite</Col>
       </Row>
