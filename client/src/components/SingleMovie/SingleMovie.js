@@ -29,6 +29,10 @@ function SingleMovie() {
   const [movieGenres, setMovieGenres] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
 
+  const [isWatched, setIswatched] = useState(false);
+  const [isNotWatched, setIsNotWatched] = useState(false);
+  const [isFavorited, setIsFavorite] = useState(false);
+
   const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
@@ -65,7 +69,10 @@ function SingleMovie() {
     console.log(user);
     console.log(movieId);
     axios
-      .get(`http://localhost:3001/api/moviestatus?movieId=${movieId}`, {
+      .get("http://localhost:3001/api/moviestatus", {
+        params: {
+          movieId: movieId,
+        },
         headers: {
           Authorization: `Bearer ${user}`,
           "Content-Type": "application/json",
@@ -73,6 +80,10 @@ function SingleMovie() {
       })
       .then((response) => {
         console.log("state", response);
+        const { IsInWatched, IsInWatchList, IsInFavorite } = response.data;
+        setIswatched(IsInWatched);
+        setIsNotWatched(IsInWatchList);
+        setIsFavorite(IsInFavorite);
       })
       .catch((error) => console.log(error));
   }, [location.pathname]);
@@ -199,9 +210,16 @@ function SingleMovie() {
             <Button style={{ margin: "5px" }} onClick={handleAddToWatchlist}>
               add to watchlist
             </Button>
-            <Button style={{ margin: "5px" }} onClick={handleAddToWatchedMovie}>
-              add to watched movie
-            </Button>
+
+            {!isWatched ? (
+              <Button
+                style={{ margin: "5px" }}
+                onClick={handleAddToWatchedMovie}>
+                add to watched movie
+              </Button>
+            ) : (
+              <div></div>
+            )}
             {/* <Button
             // style={{ margin: "5px" }}
             > */}
