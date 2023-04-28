@@ -347,6 +347,42 @@ app.get('/api/moviestatus', async (req, res, next) => {
     }
 });
 
+app.get('/api/movies', async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: "Authorization header missing" });
+        }
+        const token = authHeader.replace('Bearer ', '');
+        console.log('Token:', token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Decoded:', decoded);
+        const userId = decoded.id;
+
+        const watchedMovies = await Watched.findAll({
+            where: { user_id: userId },
+            order: [['createdAt', 'DESC']],
+            attributes: ['movie_id', 'createdAt']
+        });
+        const watchlistMovies = await Watchlist.findAll({
+            where: { user_id: userId },
+            order: [['createdAt', 'DESC']],
+            attributes: ['movie_id', 'createdAt']
+        });
+        const favoriteMovies = await Favorite.findAll({
+            where: { user_id: userId },
+            order: [['createdAt', 'DESC']],
+            attributes: ['movie_id', 'createdAt']
+        });
+
+        res.status(200).json({ watchedMovies, watchlistMovies, favoriteMovies });
+    } catch (error) {
+        console.log('Error:', error);
+        next(error);
+    }
+});
+
+
 
 console.log("error");
 // Define error handling middleware
