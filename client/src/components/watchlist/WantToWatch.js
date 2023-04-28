@@ -1,8 +1,10 @@
 import { Card, Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const WantToWatchs = ({ movie }) => {
   console.log("hi", movie);
+  const navigate = useNavigate();
   const [wantToWatchList, setWantToWatchList] = useState([]);
   useEffect(() => {
     const fetchMovies = async () => {
@@ -40,7 +42,8 @@ const WantToWatchs = ({ movie }) => {
               xs={16}>
               <Card
                 onClick={() => {
-                  console.log("hi");
+                  // console.log("hi");
+                  navigate(`/movie/${movie.id}`);
                 }}
                 hoverable
                 style={{ width: 245 }}
