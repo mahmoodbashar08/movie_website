@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./SingleMovie.css";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { Button, Card, Col, Row } from "antd";
 import { Carousel } from "antd";
 import { UserAuth } from "../../context/UseAuth";
@@ -10,6 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Checkbox from "@mui/material/Checkbox";
+import { OmitProps } from "antd/es/transfer/ListBody";
 const contentStyle = {
   height: "580px",
   width: "100%",
@@ -30,8 +32,8 @@ function SingleMovie() {
   const [recommendations, setRecommendations] = useState([]);
 
   const [isWatched, setIswatched] = useState(false);
-  const [isNotWatched, setIsNotWatched] = useState(false);
-  const [isFavorited, setIsFavorite] = useState(false);
+  const [isWatcheList, setIsWatcheList] = useState(false);
+  // const [isFavorited, setIsFavorite] = useState(false);
 
   const [favorite, setFavorite] = useState(false);
 
@@ -82,8 +84,8 @@ function SingleMovie() {
         console.log("state", response);
         const { IsInWatched, IsInWatchList, IsInFavorite } = response.data;
         setIswatched(IsInWatched);
-        setIsNotWatched(IsInWatchList);
-        setIsFavorite(IsInFavorite);
+        setIsWatcheList(IsInWatchList);
+        setFavorite(IsInFavorite);
       })
       .catch((error) => console.log(error));
   }, [location.pathname]);
@@ -106,6 +108,7 @@ function SingleMovie() {
       )
       .then((response) => {
         console.log(response);
+        setIsWatcheList(true);
       })
       .catch((error) => {
         console.log(error);
@@ -130,6 +133,8 @@ function SingleMovie() {
       )
       .then((response) => {
         console.log(response);
+        setIswatched(true);
+        setIsWatcheList(false);
       })
       .catch((error) => {
         console.log(error);
@@ -155,6 +160,7 @@ function SingleMovie() {
       )
       .then((response) => {
         console.log(response);
+        setFavorite(true);
       })
       .catch((error) => {
         console.log(error);
@@ -207,7 +213,7 @@ function SingleMovie() {
             </h6>
             <h3>Overview : </h3>
             <p>{movie["overview"]}</p>
-            {isNotWatched ? (
+            {isWatcheList == true ? (
               <Button
                 danger
                 style={{ margin: "5px" }}
@@ -221,7 +227,7 @@ function SingleMovie() {
               </Button>
             )}
 
-            {isWatched ? (
+            {isWatched == true ? (
               <Button
                 danger
                 style={{ margin: "5px" }}
@@ -236,30 +242,28 @@ function SingleMovie() {
                 add to watched movie
               </Button>
             )}
-            {/* <Button
-            // style={{ margin: "5px" }}
-            > */}
-            {/* <div onClick={handleAddToFavoriteMovie}>
-              <FavoriteIcon />
-              <FavoriteBorderIcon />
-            </div> */}
-            <FormControlLabel
+            {favorite == true ? (
+              <HeartFilled
+                style={{ margin: "5px", fontSize: "20pt", color: "red" }}
+              />
+            ) : (
+              <HeartOutlined
+                onClick={handleAddToFavoriteMovie}
+                style={{ margin: "5px", fontSize: "20pt" }}
+              />
+            )}
+            {/* <FormControlLabel
               style={{ margin: "5px" }}
               onClick={handleAddToFavoriteMovie}
               control={
-                favorite ? (
-                  <Checkbox
-                    icon={<FavoriteBorderIcon />}
-                    checkedIcon={<FavoriteIcon />}
-                  />
+                favorite == true ? (
+                  <HeartOutlined style />
                 ) : (
-                  <Checkbox
-                    icon={<FavoriteIcon />}
-                    checkedIcon={<FavoriteBorderIcon />}
-                  />
+                  // <div>hi</div>
+                  <HeartFilled />
                 )
               }
-            />
+            /> */}
             {/* <HeartTwoTone style={{ margin: "5px", fontSize: "20pt" }} /> */}
             {/* </Button> */}
           </div>
