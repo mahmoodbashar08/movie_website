@@ -66,7 +66,7 @@ function SingleMovie() {
     console.log(movieId);
     axios
       .get(
-        "http://locathost:3001/api/moviestatus",
+        "http://localhost:3001/api/moviestatus",
         {
           user_id: user,
           movieId: movieId,
