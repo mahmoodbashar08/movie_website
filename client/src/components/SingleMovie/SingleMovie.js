@@ -166,6 +166,24 @@ function SingleMovie() {
         console.log(error);
       });
   };
+  const handleDeleteFromFavorites = () => {
+    axios
+      .delete(`http://localhost:3001/api/removefavorite/${movieId}`, {
+        headers: {
+          Authorization: `Bearer ${user}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setFavorite(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+
   const handleNewMovie = (recommendate) => {
     console.log("this movie", recommendate);
     navigate(`/movie/${recommendate["id"]}`);
@@ -217,7 +235,7 @@ function SingleMovie() {
               <Button
                 danger
                 style={{ margin: "5px" }}
-                // onClick={handleAddToWatchlist}
+              // onClick={handleAddToWatchlist}
               >
                 remove from watchlist
               </Button>
@@ -231,7 +249,7 @@ function SingleMovie() {
               <Button
                 danger
                 style={{ margin: "5px" }}
-                // onClick={handleAddToWatchedMovie}
+              // onClick={handleAddToWatchedMovie}
               >
                 remove from watched movie
               </Button>
@@ -244,6 +262,7 @@ function SingleMovie() {
             )}
             {favorite == true ? (
               <HeartFilled
+                onClick={handleDeleteFromFavorites}
                 style={{ margin: "5px", fontSize: "20pt", color: "red" }}
               />
             ) : (
