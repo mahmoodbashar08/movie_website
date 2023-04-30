@@ -371,7 +371,7 @@ app.get("/api/moviestatus", async (req, res, next) => {
         next(error);
     }
 });
-
+// to return the movie that in watched list, watchlist, favorite with the time of creatting
 app.get("/api/movies", async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
@@ -406,6 +406,111 @@ app.get("/api/movies", async (req, res, next) => {
         next(error);
     }
 });
+
+// removing the movies from watched list note:each user can have multiple movies
+app.delete("/api/removewatched/:movieId", async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: "Authorization header missing" });
+        }
+        const token = authHeader.replace("Bearer ", "");
+        console.log("Token:", token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("Decoded:", decoded);
+        const userId = decoded.id;
+        const movieId = req.params.movieId;
+        console.log("User ID:", userId);
+        console.log("Movie ID:", movieId);
+
+        const watchedMovie = await Watched.findOne({
+            where: { user_id: userId, movie_id: movieId },
+        });
+
+        if (!watchedMovie) {
+            return res.status(404).json({ message: "Movie not found in watched list" });
+        }
+
+        await Watched.destroy({
+            where: { user_id: userId, movie_id: movieId },
+        });
+
+        res.status(200).json({ message: "Movie removed from watched list" });
+    } catch (error) {
+        console.log("Error:", error);
+        next(error);
+    }
+});
+
+// removing the movies from Watchlist list note:each user can have multiple movies
+app.delete("/api/remocewanttowatch/:movieId", async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: "Authorization header missing" });
+        }
+        const token = authHeader.replace("Bearer ", "");
+        console.log("Token:", token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("Decoded:", decoded);
+        const userId = decoded.id;
+        const movieId = req.params.movieId;
+        console.log("User ID:", userId);
+        console.log("Movie ID:", movieId);
+
+        const WatchlistMovie = await Watchlist.findOne({
+            where: { user_id: userId, movie_id: movieId },
+        });
+
+        if (!WatchlistMovie) {
+            return res.status(404).json({ message: "Movie not found in Watchlist list" });
+        }
+
+        await Watchlist.destroy({
+            where: { user_id: userId, movie_id: movieId },
+        });
+
+        res.status(200).json({ message: "Movie removed from Watchlist list" });
+    } catch (error) {
+        console.log("Error:", error);
+        next(error);
+    }
+});
+// removing the movies from favorite list note:each user can have multiple movies
+app.delete("/api/removefavorite/:movieId", async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: "Authorization header missing" });
+        }
+        const token = authHeader.replace("Bearer ", "");
+        console.log("Token:", token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("Decoded:", decoded);
+        const userId = decoded.id;
+        const movieId = req.params.movieId;
+        console.log("User ID:", userId);
+        console.log("Movie ID:", movieId);
+
+        const FavoriteMovie = await Favorite.findOne({
+            where: { user_id: userId, movie_id: movieId },
+        });
+
+        if (!FavoriteMovie) {
+            return res.status(404).json({ message: "Movie not found in favorite list" });
+        }
+
+        await Favorite.destroy({
+            where: { user_id: userId, movie_id: movieId },
+        });
+
+        res.status(200).json({ message: "Movie removed from favorite list" });
+    } catch (error) {
+        console.log("Error:", error);
+        next(error);
+    }
+});
+
 
 console.log("error");
 // Define error handling middleware
