@@ -114,6 +114,24 @@ function SingleMovie() {
         console.log(error);
       });
   };
+  const handleRemoveFromWatchlist = () => {
+    console.log(user);
+    console.log(movie.id);
+    axios
+      .delete(`http://localhost:3001/api/remocewanttowatch/${movieId}`, {
+        headers: {
+          Authorization: `Bearer ${user}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setIsWatcheList(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const handleAddToWatchedMovie = () => {
     console.log(user);
     console.log(movie.id);
@@ -135,6 +153,24 @@ function SingleMovie() {
         console.log(response);
         setIswatched(true);
         setIsWatcheList(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleRemoveFromWatchedMovie = () => {
+    // console.log(user);
+    // console.log(movie.id);
+    axios
+      .delete(`http://localhost:3001/api/removewatched/${movieId}`, {
+        headers: {
+          Authorization: `Bearer ${user}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setIswatched(false);
       })
       .catch((error) => {
         console.log(error);
@@ -183,7 +219,6 @@ function SingleMovie() {
       });
   };
 
-
   const handleNewMovie = (recommendate) => {
     console.log("this movie", recommendate);
     navigate(`/movie/${recommendate["id"]}`);
@@ -191,7 +226,6 @@ function SingleMovie() {
   if (!movie) {
     return <p>Loading...</p>;
   }
-  const dotPosition = "none";
   return (
     <div className="singleMovie-main">
       <Row gutter={24} justify="center">
@@ -235,8 +269,7 @@ function SingleMovie() {
               <Button
                 danger
                 style={{ margin: "5px" }}
-              // onClick={handleAddToWatchlist}
-              >
+                onClick={handleRemoveFromWatchlist}>
                 remove from watchlist
               </Button>
             ) : (
@@ -249,8 +282,7 @@ function SingleMovie() {
               <Button
                 danger
                 style={{ margin: "5px" }}
-              // onClick={handleAddToWatchedMovie}
-              >
+                onClick={handleRemoveFromWatchedMovie}>
                 remove from watched movie
               </Button>
             ) : (
