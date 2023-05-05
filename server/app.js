@@ -112,63 +112,59 @@ const Favorite = sequelize.define("Favorite", {
 
 console.log("database");
 // Set up storage for uploaded profile images
+console.log("photo");
+const fs = require('fs');
+
+const dir = './profileImgs';
+
+if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "/server/profileimgs");
+        cb(null, './profileImgs');
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
-    },
+        const ext = path.extname(file.originalname);
+        const username = req.body.username;
+        cb(null, username + ext);
+    }
 });
 
 const upload = multer({ storage: storage });
 
-console.log("photo");
 // adding a new account
-app.post(
-    "/api/register",
-    upload.single("profileImage"),
-    async (req, res, next) => {
-        try {
-            const { username, password, email } = req.body;
-            console.log(username, password, email);
-            // Check if username or email already exist in database
-            const userWithUsername = await User.findOne({ where: { username } });
-            const userWithEmail = await User.findOne({ where: { email } });
+app.post("/api/register", upload.single("profileImage"), async (req, res, next) => {
+    try {
+        const { username, password, email } = req.body;
+        console.log(username, password, email);
 
-            if (userWithUsername && userWithEmail) {
-                return res.status(400).json({ message: "Account already exists" });
-            } else if (userWithUsername) {
-                return res.status(400).json({ message: "Account name is taken" });
-            } else if (userWithEmail) {
-                return res.status(400).json({ message: "Email has an account" });
-            }
+        // Check if username or email already exist in database
+        const userWithUsername = await User.findOne({ where: { username } });
+        const userWithEmail = await User.findOne({ where: { email } });
 
-            let profileImgPath = null;
-            if (req.file) {
-                profileImgPath = req.file.filename;
-            }
-
-            const user = await User.create({
-                username,
-                password,
-                email,
-                profileImgPath: req.file ? req.file.path : null,
-            });
-
-            const profileImgToFrontend = {
-                Img: {
-                    profileImgPath: user.profileImgPath,
-                },
-                message: "User created successfully",
-            };
-
-            res.status(201).json(profileImgToFrontend, user);
-        } catch (error) {
-            next(error);
+        if (userWithUsername && userWithEmail) {
+            return res.status(400).json({ message: "Account already exists" });
+        } else if (userWithUsername) {
+            return res.status(400).json({ message: "Account name is taken" });
+        } else if (userWithEmail) {
+            return res.status(400).json({ message: "Email has an account" });
         }
+
+        const user = await User.create({
+            username,
+            password,
+            email,
+            profileImgPath: req.file ? req.file.filename : null,
+        });
+
+        res.status(201).json(user);
+    } catch (error) {
+        next(error);
     }
-);
+});
+
 
 console.log("validation");
 // loging in and checking the validation
