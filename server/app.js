@@ -113,10 +113,10 @@ console.log("database");
 // Set up storage for uploaded profile images
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "public/uploads/profile-images/");
+        cb(null, "/server/profileimgs");
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname);
+        cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
     },
 });
 
@@ -141,6 +141,11 @@ app.post(
                 return res.status(400).json({ message: "Account name is taken" });
             } else if (userWithEmail) {
                 return res.status(400).json({ message: "Email has an account" });
+            }
+
+            let profileImgPath = null;
+            if (req.file) {
+                profileImgPath = req.file.filename;
             }
 
             const user = await User.create({
