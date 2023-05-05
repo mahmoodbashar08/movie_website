@@ -5,6 +5,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const cors = require("cors");
 const app = express();
 const multer = require("multer");
+const path = require('path');
 
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -154,7 +155,15 @@ app.post(
                 email,
                 profileImgPath: req.file ? req.file.path : null,
             });
-            res.status(201).json(user);
+
+            const profileImgToFrontend = {
+                Img: {
+                    profileImgPath: user.profileImgPath,
+                },
+                message: "User created successfully",
+            };
+
+            res.status(201).json(profileImgToFrontend, user);
         } catch (error) {
             next(error);
         }
