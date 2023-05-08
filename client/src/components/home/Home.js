@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./home.css";
-import { Card, Col, Row, Input, Modal, Button } from "antd";
+import { Card, Col, Row, Input, Button } from "antd";
 import { useNavigate } from "react-router-dom";
-// const { Meta } = Card;
-// import dotenv from 'dotenv';
-// dotenv.config();
 const Home = () => {
-  // console.log("hi", process.env.REACT_APP_API_KEY);
   const [popularMovie, setPopularMovie] = useState([]);
   const [searchMovie, setSearchMovie] = useState("");
   const [page, setPage] = useState(2);
@@ -20,7 +16,6 @@ const Home = () => {
         `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&query=${searchMovie}&page=1&include_adult=false`
       )
       .then((response) => {
-        // console.log(response.data["results"]);
         setPopularMovie(response.data["results"]);
       })
       .catch((error) => {
@@ -33,7 +28,6 @@ const Home = () => {
         `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.REACT_APP_API_KEY}&`
       )
       .then((response) => {
-        // console.log("hi", response.data["results"]);
         setPopularMovie(response.data["results"]);
       })
       .catch((error) => {
@@ -69,39 +63,47 @@ const Home = () => {
           </Col>
         </Row>
       </div>
-      <Row gutter={16} justify="center">
+
+      <Row justify="center" gutter={{ xs: 8, sm: 16, md: 24 }}>
         {popularMovie.map((movie, id) => {
           return (
-            <div key={id}>
-              <Col
-                md={6}
+            <Col
+              key={id}
+              lg={4}
+              md={7}
+              sm={11}
+              xs={10}
+              style={{
+                margin: "10px",
+              }}>
+              <Card
+                hoverable
                 style={{
-                  width: 245,
-                  margin: "10px",
-                }}>
-                <Card
-                  hoverable
+                  height: "100%",
+                }}
+                onClick={() => {
+                  // console.log("hi");
+                  navigate(`/movie/${movie.id}`);
+                }}
+                cover={
+                  <img
+                    alt="example"
+                    src={
+                      "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" +
+                      movie.poster_path
+                    }
+                  />
+                }>
+                <p
                   style={{
-                    width: 245,
-                  }}
-                  // onClick={showModal}
-                  onClick={() => {
-                    // console.log("hi");
-                    navigate(`/movie/${movie.id}`);
-                  }}
-                  cover={
-                    <img
-                      alt="example"
-                      src={
-                        "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" +
-                        movie.poster_path
-                      }
-                    />
-                  }>
-                  <h3>{movie.title ? movie.title : movie.name}</h3>
-                </Card>
-              </Col>
-            </div>
+                    fontSize: "14pt",
+                    textAlign: "center",
+                    padding: "0px",
+                  }}>
+                  {movie.title ? movie.title : movie.name}
+                </p>
+              </Card>
+            </Col>
           );
         })}
       </Row>

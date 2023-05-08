@@ -13,11 +13,13 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Checkbox from "@mui/material/Checkbox";
 import { OmitProps } from "antd/es/transfer/ListBody";
 const contentStyle = {
-  height: "580px",
+  // height: "380px",
   width: "100%",
   // color: "#fff",
+  filter: "brightness(0.6)",
   lineHeight: "160px",
   textAlign: "center",
+  // borderRadius: "30px",
   // background: "#364d79",
 };
 function SingleMovie() {
@@ -28,13 +30,13 @@ function SingleMovie() {
   const { user } = UserAuth();
   const [movie, setMovie] = useState([]);
   const [movieImages, setMovieImages] = useState([]);
+  const [movieOriginal, setMovieOriginal] = useState();
   const [movieGenres, setMovieGenres] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
 
   const [isWatched, setIswatched] = useState(false);
   const [isWatcheList, setIsWatcheList] = useState(false);
   // const [isFavorited, setIsFavorite] = useState(false);
-
   const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
@@ -43,9 +45,10 @@ function SingleMovie() {
         `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
       )
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setMovie(response.data);
         setMovieGenres(response.data["genres"]);
+        setMovieOriginal(response.data["poster_path"]);
       })
       .catch((error) => console.log(error));
     axios
@@ -58,6 +61,10 @@ function SingleMovie() {
         setMovieImages(limitImages);
       })
       .catch((error) => console.log(error));
+    // axios.get().then((response) => {
+    //   console.log(response);
+    //   setMovieOriginal();
+    // });
     axios
       .get(
         `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
@@ -68,8 +75,8 @@ function SingleMovie() {
       })
       .catch((error) => console.log(error));
     window.scrollTo(0, 0);
-    console.log(user);
-    console.log(movieId);
+    // console.log(user);
+    // console.log(movieId);
     axios
       .get("http://localhost:3001/api/moviestatus", {
         params: {
@@ -81,7 +88,7 @@ function SingleMovie() {
         },
       })
       .then((response) => {
-        console.log("state", response);
+        // console.log("state", response);
         const { IsInWatched, IsInWatchList, IsInFavorite } = response.data;
         setIswatched(IsInWatched);
         setIsWatcheList(IsInWatchList);
@@ -90,8 +97,8 @@ function SingleMovie() {
       .catch((error) => console.log(error));
   }, [location.pathname]);
   const handleAddToWatchlist = () => {
-    console.log(user);
-    console.log(movie.id);
+    // console.log(user);
+    // console.log(movie.id);
     axios
       .post(
         `http://localhost:3001/api/watchlist`,
@@ -228,13 +235,34 @@ function SingleMovie() {
   }
   return (
     <div className="singleMovie-main">
-      <Row gutter={24} justify="center">
-        <Col lg={16} md={24} sm={24} xs={24} justify="center">
-          <div style={{ width: "100%" }}>
-            <Carousel dots={false} effect="scrollx" interval={100} autoplay>
+      <Row gutter={24} justify="start">
+        <div
+          style={{
+            marginLeft: "20px",
+            width: "60%",
+            height: "100%",
+            // borderRadius: "30px",
+            // display: "flex",
+            // justifyContent: "center",
+            // alignItems: "center",
+          }}>
+          {/* <Col lg={25} md={24} sm={24} xs={24} justify="start"> */}
+          <div>
+            <Carousel
+              // style={{ borderRadius: "30px" }}
+              dots={false}
+              effect="scrollx"
+              interval={100}
+              autoplay>
               {movieImages.map((movieImage, id) => {
                 return (
-                  <div key={id} style={{ width: "100%" }}>
+                  <div
+                    key={id}
+                    style={{
+                      width: "100%",
+                      height: "400px",
+                      // borderRadius: "30px",
+                    }}>
                     <img
                       style={contentStyle}
                       src={
@@ -246,9 +274,22 @@ function SingleMovie() {
                 );
               })}
             </Carousel>
+            <img
+              style={{
+                position: "absolute",
+                width: "150px",
+                marginTop: "-180px",
+                marginLeft: "30px",
+                borderRadius: "20px",
+              }}
+              src={"https://image.tmdb.org/t/p/original/" + movieOriginal}
+            />
           </div>
-        </Col>
-        <Col md={8} sm={16} xs={16} justify="center">
+
+          {/* </Col> */}
+        </div>
+
+        {/* <Col md={8} sm={16} xs={16} justify="center">
           <div style={{ paddingTop: "20px" }}>
             <h4>{movie["release_date"]}</h4>
             <h1>{movie["title"]}</h1>
@@ -303,22 +344,8 @@ function SingleMovie() {
                 style={{ margin: "5px", fontSize: "20pt" }}
               />
             )}
-            {/* <FormControlLabel
-              style={{ margin: "5px" }}
-              onClick={handleAddToFavoriteMovie}
-              control={
-                favorite == true ? (
-                  <HeartOutlined style />
-                ) : (
-                  // <div>hi</div>
-                  <HeartFilled />
-                )
-              }
-            /> */}
-            {/* <HeartTwoTone style={{ margin: "5px", fontSize: "20pt" }} /> */}
-            {/* </Button> */}
           </div>
-        </Col>
+        </Col> */}
       </Row>
       <h1 style={{ padding: "20px", paddingTop: "100px" }}>Related movie</h1>
       <Row gutter={24} justify="center">
