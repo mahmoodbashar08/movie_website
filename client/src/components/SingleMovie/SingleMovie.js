@@ -29,8 +29,6 @@ function SingleMovie() {
   // console.log(movieId);
   const { user } = UserAuth();
   const [movie, setMovie] = useState([]);
-  const [movieImages, setMovieImages] = useState([]);
-  const [movieOriginal, setMovieOriginal] = useState();
   const [movieGenres, setMovieGenres] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
 
@@ -48,23 +46,8 @@ function SingleMovie() {
         console.log(response.data);
         setMovie(response.data);
         setMovieGenres(response.data["genres"]);
-        setMovieOriginal(response.data["poster_path"]);
       })
       .catch((error) => console.log(error));
-    axios
-      .get(
-        `https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${process.env.REACT_APP_API_KEY}`
-      )
-      .then((response) => {
-        // console.log("images", response.data.backdrops);
-        const limitImages = response.data.backdrops.slice(0, 15);
-        setMovieImages(limitImages);
-      })
-      .catch((error) => console.log(error));
-    // axios.get().then((response) => {
-    //   console.log(response);
-    //   setMovieOriginal();
-    // });
     axios
       .get(
         `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
@@ -238,56 +221,37 @@ function SingleMovie() {
       <Row gutter={24} justify="start">
         <div
           style={{
-            marginLeft: "20px",
-            width: "60%",
-            height: "100%",
-            // borderRadius: "30px",
-            // display: "flex",
-            // justifyContent: "center",
-            // alignItems: "center",
-          }}>
-          {/* <Col lg={25} md={24} sm={24} xs={24} justify="start"> */}
-          <div>
-            <Carousel
-              // style={{ borderRadius: "30px" }}
-              dots={false}
-              effect="scrollx"
-              interval={100}
-              autoplay>
-              {movieImages.map((movieImage, id) => {
-                return (
-                  <div
-                    key={id}
-                    style={{
-                      width: "100%",
-                      height: "400px",
-                      // borderRadius: "30px",
-                    }}>
-                    <img
-                      style={contentStyle}
-                      src={
-                        "https://www.themoviedb.org/t/p/original" +
-                        movieImage["file_path"]
-                      }
-                    />
-                  </div>
-                );
-              })}
-            </Carousel>
-            <img
-              style={{
-                position: "absolute",
-                width: "150px",
-                marginTop: "-180px",
-                marginLeft: "30px",
-                borderRadius: "20px",
-              }}
-              src={"https://image.tmdb.org/t/p/original/" + movieOriginal}
-            />
-          </div>
+            width: "100%",
+            height: "450px",
+            backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie["backdrop_path"]}")`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "brightness(0.3)",
+          }}></div>
+        <div
+          style={{
+            position: "absolute",
 
-          {/* </Col> */}
+            marginTop: "250px",
+            marginLeft: "40px",
+            display: "flex",
+          }}>
+          <img
+            style={{
+              width: "180px",
+              borderRadius: "10px",
+              transition: "filter 0.3s", // Add a smooth transition for the filter effect
+            }}
+            src={"https://image.tmdb.org/t/p/original/" + movie["poster_path"]}
+            onMouseOver={(event) => (event.target.style.filter = "blur(2px)")} // Apply blur on hover
+            onMouseOut={(event) => (event.target.style.filter = "none")} // Remove blur when not hovering
+          />
+          <h1
+            style={{ color: "white", marginTop: "130px", marginLeft: "30px" }}>
+            {movie["title"]}
+          </h1>
         </div>
+        {/* </Col> */}
 
         {/* <Col md={8} sm={16} xs={16} justify="center">
           <div style={{ paddingTop: "20px" }}>
