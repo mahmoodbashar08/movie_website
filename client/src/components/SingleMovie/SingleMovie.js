@@ -4,7 +4,7 @@ import axios from "axios";
 import "./SingleMovie.css";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { Button, Card, Col, Row } from "antd";
-import { Carousel } from "antd";
+
 import { UserAuth } from "../../context/UseAuth";
 // import { HeartTwoTone } from "@ant-design/icons";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,6 +12,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Checkbox from "@mui/material/Checkbox";
 import { OmitProps } from "antd/es/transfer/ListBody";
+import { Rating } from "@mui/material";
 const contentStyle = {
   // height: "380px",
   width: "100%",
@@ -246,31 +247,61 @@ function SingleMovie() {
             onMouseOver={(event) => (event.target.style.filter = "blur(2px)")} // Apply blur on hover
             onMouseOut={(event) => (event.target.style.filter = "none")} // Remove blur when not hovering
           />
-          <h1
-            style={{ color: "white", marginTop: "130px", marginLeft: "30px" }}>
-            {movie["title"]}
-          </h1>
-        </div>
-        {/* </Col> */}
-
-        {/* <Col md={8} sm={16} xs={16} justify="center">
-          <div style={{ paddingTop: "20px" }}>
-            <h4>{movie["release_date"]}</h4>
-            <h1>{movie["title"]}</h1>
-            <p>vote average : {movie["vote_average"]}</p>
-            <h4>genres : </h4>
-            <h6>
-              {movieGenres.map((recorde, id) => {
+          <div>
+            <h1
+              style={{ color: "white", marginTop: "30px", marginLeft: "30px" }}>
+              {movie["title"]}
+            </h1>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}>
+              <h4 style={{ color: "white", marginLeft: "30px" }}>
+                {movie["release_date"]}
+              </h4>
+            </div>
+            <div style={{ display: "flex", marginLeft: "30px" }}>
+              {movieGenres.map((record, id) => {
                 return (
-                  <div key={id} style={{ padding: "10px" }}>
-                    {recorde["name"]}
+                  <div
+                    key={id}
+                    style={{
+                      marginRight: "10px",
+                      color: "white",
+                      border: "1px solid white",
+                      borderRadius: "20px",
+                      padding: "10px",
+                      transition: "background-color 0.3s",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor =
+                        "rgba(255, 255, 255, 0.3)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = "transparent";
+                    }}>
+                    {record["name"]}
                   </div>
                 );
               })}
-            </h6>
+            </div>
+          </div>
+        </div>
+
+        {/* </Col> */}
+
+        <Col md={8} sm={16} xs={16} justify="center">
+          <div style={{ paddingTop: "20px" }}>
+            <h1>{movie["title"]}</h1>
+            <p>vote average : {Math.round(movie["vote_average"])}</p>
+            <h4>genres : </h4>
+            <h6></h6>
             <h3>Overview : </h3>
             <p>{movie["overview"]}</p>
-            {isWatcheList == true ? (
+            {isWatcheList === true ? (
               <Button
                 danger
                 style={{ margin: "5px" }}
@@ -283,7 +314,7 @@ function SingleMovie() {
               </Button>
             )}
 
-            {isWatched == true ? (
+            {isWatched === true ? (
               <Button
                 danger
                 style={{ margin: "5px" }}
@@ -297,7 +328,7 @@ function SingleMovie() {
                 add to watched movie
               </Button>
             )}
-            {favorite == true ? (
+            {favorite === true ? (
               <HeartFilled
                 onClick={handleDeleteFromFavorites}
                 style={{ margin: "5px", fontSize: "20pt", color: "red" }}
@@ -309,44 +340,49 @@ function SingleMovie() {
               />
             )}
           </div>
-        </Col> */}
+        </Col>
       </Row>
       <h1 style={{ padding: "20px", paddingTop: "100px" }}>Related movie</h1>
-      <Row gutter={24} justify="center">
-        {recommendations.map((recommendate, id) => {
+      <Row justify="center" gutter={{ xs: 8, sm: 16, md: 24 }}>
+        {recommendations.map((movie, id) => {
           return (
-            <div key={id}>
-              <Col
-                justify="center"
-                onClick={() => handleNewMovie(recommendate)}
-                md={6}>
-                <div>
-                  <Card
-                    hoverable
-                    style={{ width: 245 }}
-                    // onClick={showModal}
-                    onClick={() => {
-                      console.log("hi");
-                      navigate(`/movie/${recommendate["id"]}`);
-                    }}
-                    cover={
-                      <img
-                        alt="example"
-                        src={
-                          "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" +
-                          recommendate["poster_path"]
-                        }
-                      />
-                    }>
-                    <h3>
-                      {recommendate["title"]
-                        ? recommendate["title"]
-                        : recommendate["name"]}
-                    </h3>
-                  </Card>
-                </div>
-              </Col>
-            </div>
+            <Col
+              key={id}
+              lg={4}
+              md={7}
+              sm={11}
+              xs={10}
+              style={{
+                margin: "10px",
+              }}>
+              <Card
+                hoverable
+                style={{
+                  height: "100%",
+                }}
+                onClick={() => {
+                  // console.log("hi");
+                  navigate(`/movie/${movie.id}`);
+                }}
+                cover={
+                  <img
+                    alt="example"
+                    src={
+                      "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" +
+                      movie.poster_path
+                    }
+                  />
+                }>
+                <p
+                  style={{
+                    fontSize: "14pt",
+                    textAlign: "center",
+                    padding: "0px",
+                  }}>
+                  {movie.title ? movie.title : movie.name}
+                </p>
+              </Card>
+            </Col>
           );
         })}
       </Row>
