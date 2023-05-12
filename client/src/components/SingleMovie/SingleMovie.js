@@ -293,54 +293,52 @@ function SingleMovie() {
 
         {/* </Col> */}
 
-        <Col md={8} sm={16} xs={16} justify="center">
-          <div style={{ paddingTop: "20px" }}>
-            <h1>{movie["title"]}</h1>
+        {/* <Col md={8} sm={16} xs={16} justify="center"> */}
+        <div style={{ paddingTop: "20px", marginLeft: "250px" }}>
+          {/* <h1>{movie["title"]}</h1>
             <p>vote average : {Math.round(movie["vote_average"])}</p>
             <h4>genres : </h4>
             <h6></h6>
             <h3>Overview : </h3>
-            <p>{movie["overview"]}</p>
-            {isWatcheList === true ? (
-              <Button
-                danger
-                style={{ margin: "5px" }}
-                onClick={handleRemoveFromWatchlist}>
-                remove from watchlist
-              </Button>
-            ) : (
-              <Button style={{ margin: "5px" }} onClick={handleAddToWatchlist}>
-                add to watchlist
-              </Button>
-            )}
+            <p>{movie["overview"]}</p> */}
+          {isWatcheList === true ? (
+            <Button
+              danger
+              style={{ margin: "5px" }}
+              onClick={handleRemoveFromWatchlist}>
+              remove from watchlist
+            </Button>
+          ) : (
+            <Button style={{ margin: "5px" }} onClick={handleAddToWatchlist}>
+              add to watchlist
+            </Button>
+          )}
 
-            {isWatched === true ? (
-              <Button
-                danger
-                style={{ margin: "5px" }}
-                onClick={handleRemoveFromWatchedMovie}>
-                remove from watched movie
-              </Button>
-            ) : (
-              <Button
-                style={{ margin: "5px" }}
-                onClick={handleAddToWatchedMovie}>
-                add to watched movie
-              </Button>
-            )}
-            {favorite === true ? (
-              <HeartFilled
-                onClick={handleDeleteFromFavorites}
-                style={{ margin: "5px", fontSize: "20pt", color: "red" }}
-              />
-            ) : (
-              <HeartOutlined
-                onClick={handleAddToFavoriteMovie}
-                style={{ margin: "5px", fontSize: "20pt" }}
-              />
-            )}
-          </div>
-        </Col>
+          {isWatched === true ? (
+            <Button
+              danger
+              style={{ margin: "5px" }}
+              onClick={handleRemoveFromWatchedMovie}>
+              remove from watched movie
+            </Button>
+          ) : (
+            <Button style={{ margin: "5px" }} onClick={handleAddToWatchedMovie}>
+              add to watched movie
+            </Button>
+          )}
+          {favorite === true ? (
+            <HeartFilled
+              onClick={handleDeleteFromFavorites}
+              style={{ margin: "5px", fontSize: "20pt", color: "red" }}
+            />
+          ) : (
+            <HeartOutlined
+              onClick={handleAddToFavoriteMovie}
+              style={{ margin: "5px", fontSize: "20pt" }}
+            />
+          )}
+        </div>
+        {/* </Col> */}
       </Row>
       <h1 style={{ padding: "20px", paddingTop: "100px" }}>Related movie</h1>
       <Row justify="center" gutter={{ xs: 8, sm: 16, md: 24 }}>
