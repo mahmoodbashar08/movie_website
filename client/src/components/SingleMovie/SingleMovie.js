@@ -326,15 +326,29 @@ function SingleMovie() {
               add to watched movie
             </Button>
           )}
+
           {favorite === true ? (
             <HeartFilled
               onClick={handleDeleteFromFavorites}
-              style={{ margin: "5px", fontSize: "20pt", color: "red" }}
+              style={{
+                marginTop: "9px",
+                margin: "5px",
+                fontSize: "20pt",
+                color: "red",
+                cursor: "pointer",
+                position: "absolute",
+              }}
             />
           ) : (
             <HeartOutlined
               onClick={handleAddToFavoriteMovie}
-              style={{ margin: "5px", fontSize: "20pt" }}
+              style={{
+                marginTop: "9px",
+                margin: "5px",
+                fontSize: "20pt",
+                cursor: "pointer",
+                position: "absolute",
+              }}
             />
           )}
         </div>
